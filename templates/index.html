@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NusaShuttle - Konsol Pemesanan Tiket & Kursi Travel</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <!-- Lucide icons for crisp modern icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-icon">
+        <i data-lucide="bus"></i>
+      </div>
+      <div>
+        <div class="brand-title">NusaShuttle</div>
+        <div class="brand-subtitle">Konsol Pemesanan Tiket &amp; Kursi Travel</div>
+      </div>
+    </div>
+
+    <!-- Stepper Navigation -->
+    <nav class="stepper-nav">
+      <button class="step-tab active" id="tab-step-1" onclick="goToStep(1)">
+        <span>1. Rute &amp; Jadwal</span>
+      </button>
+      <button class="step-tab" id="tab-step-2" onclick="goToStep(2)">
+        <span>2. Pilih Kursi &amp; Kuota</span>
+      </button>
+      <button class="step-tab" id="tab-step-3" onclick="goToStep(3)">
+        <span>3. Penumpang &amp; Tarif</span>
+      </button>
+    </nav>
+
+    <!-- Header Info Badges -->
+    <div class="header-info">
+      <div class="info-pill">
+        <i data-lucide="calendar" size="15"></i>
+        <span id="current-date-display">18 Nov 2026</span>
+      </div>
+      <div class="info-pill cashier">
+        <i data-lucide="briefcase" size="15"></i>
+        <span>Loket Pasteur • Sifa A.</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Wrapper -->
+  <main class="main-wrapper">
+
+    <!-- ========================================== -->
+    <!-- STEP 1: RUTE & JADWAL                     -->
+    <!-- ========================================== -->
+    <section id="step-1" class="screen-container">
+      
+      <!-- Left Panel: Filter & Selected Summary -->
+      <div class="left-col">
+        <div class="card-panel">
+          <div class="card-header-flex">
+            <div>
+              <div class="section-title">
+                <i data-lucide="git-branch" size="18"></i>
+                Navigasi Rute
+              </div>
+              <div class="section-desc">Pilih koridor asal, tujuan, dan tanggal</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Koridor Keberangkatan</label>
+            <select class="form-control" id="route-selector" onchange="onRouteFilterChange()">
+              <option value="BDG-JKT" selected>Bandung (Pasteur) → Jakarta (Sudirman)</option>
+              <option value="JKT-BDG">Jakarta (Sudirman) → Bandung (Pasteur)</option>
+              <option value="BDG-BKS">Bandung (Pasteur) → Bekasi Barat</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Tanggal Keberangkatan</label>
+            <input type="date" class="form-control" id="travel-date" value="2026-11-18">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Kelas Armada</label>
+            <select class="form-control" id="fleet-filter" onchange="onRouteFilterChange()">
+              <option value="ALL" selected>Semua Armada</option>
+              <option value="HiAce Premio Eksekutif">HiAce Premio Eksekutif</option>
+              <option value="HiAce Commuter">HiAce Commuter</option>
+            </select>
+          </div>
+
+          <!-- Jadwal Terpilih Box -->
+          <div class="selected-schedule-box">
+            <span class="tag-pill" id="summary-sched-id">JAD-01</span>
+            <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 4px;" id="summary-sched-route">
+              Bandung (Pasteur) → Jakarta (Sudirman)
+            </div>
+            <div style="font-size: 0.8rem; color: var(--color-text-muted);" id="summary-sched-time">
+              08:30 WIB → 11:45 WIB • HiAce Premio Eksekutif
+            </div>
+
+            <div class="price-display">
+              <span class="label">Tarif Dasar / Kursi</span>
+              <span class="value" id="summary-sched-price">Rp 150.000</span>
+            </div>
+
+            <button type="button" class="btn-primary" onclick="goToStep(2)">
+              <span>Lanjut Pilih Kursi</span>
+              <i data-lucide="arrow-right" size="16"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel: Schedule Cards List -->
+      <div class="right-col">
+        <div class="card-panel">
+          <div class="card-header-flex">
+            <div>
+              <div class="section-title">
+                <i data-lucide="clock" size="18"></i>
+                Daftar Jadwal Keberangkatan
+              </div>
+              <div class="section-desc">Bandung (Pasteur) → Jakarta (Sudirman) • 18 Nov 2026</div>
+            </div>
+            <span class="badge-counter" id="schedule-count-badge">3 Jadwal</span>
+          </div>
+
+          <div class="schedule-list" id="schedule-list-items">
+            <!-- Rendered by JavaScript -->
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- STEP 2: PILIH KURSI & KUOTA                -->
+    <!-- ========================================== -->
+    <section id="step-2" class="screen-container seat-screen" style="display: none;">
+      
+      <!-- Left Panel: Seat Layout -->
+      <div class="left-col">
+        <div class="card-panel">
+          <div class="card-header-flex">
+            <div>
+              <div class="section-title">
+                <i data-lucide="truck" size="18"></i>
+                Denah Kursi Armada Shuttle
+              </div>
+              <div class="section-desc" id="seat-step-subtitle">
+                JAD-01 • Bandung (Pasteur) → Jakarta (Sudirman) • 08:30 WIB
+              </div>
+            </div>
+            <span class="badge-mint" id="available-seats-badge">Sisa 6 dari 14 Kursi</span>
+          </div>
+
+          <!-- Legend Bar -->
+          <div class="legend-bar">
+            <div class="legend-item">
+              <span class="legend-box available"></span>
+              <span>Tersedia</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-box selected"></span>
+              <span>Dipilih</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-box occupied"></span>
+              <span>Terisi</span>
+            </div>
+          </div>
+
+          <!-- Chassis / Car Interior Visual -->
+          <div class="shuttle-chassis">
+            <div class="seat-grid-shuttle" id="seat-grid-container">
+              <!-- Dynamically populated rows matching layout -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel: Quota & Selected Summary -->
+      <div class="right-col">
+        <div class="card-panel">
+          <div class="card-header-flex">
+            <div>
+              <div class="section-title">
+                <i data-lucide="shield-check" size="18"></i>
+                Validasi Kuota Kursi
+              </div>
+            </div>
+          </div>
+
+          <!-- Quota Rule Box -->
+          <div class="quota-box">
+            <div class="quota-box-title">
+              <span>Kuota Transaksi Aman</span>
+              <span id="quota-counter" style="font-family: monospace;">2 / 4 Maks</span>
+            </div>
+            <div class="quota-box-desc" id="quota-helper-text">
+              Tersedia 6 kursi kosong pada armada ini. Anda masih dapat memilih 2 kursi lagi.
+            </div>
+          </div>
+
+          <!-- Selected Seats List -->
+          <div class="selected-seats-container">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 0.82rem; font-weight: 700; color: #4a3e35;">Kursi Dipilih</span>
+              <button type="button" class="btn-reset-text" onclick="resetSeats()">Reset Kursi</button>
+            </div>
+            <div class="seats-badge-list" id="selected-seat-pills">
+              <!-- Rendered badges: e.g. 2C, 4A -->
+            </div>
+          </div>
+
+          <!-- Price Calculation Box -->
+          <div class="selected-schedule-box" style="margin-top: 0;">
+            <div class="price-display" style="border: none; margin: 0; padding: 0;">
+              <span class="label">Estimasi Tarif Dasar</span>
+              <span class="value" id="estimated-base-fare">Rp 300.000</span>
+            </div>
+          </div>
+
+          <!-- Navigation Buttons -->
+          <div class="button-duo">
+            <button type="button" class="btn-outline" onclick="goToStep(1)">
+              <i data-lucide="arrow-left" size="16"></i>
+              <span>Jadwal</span>
+            </button>
+            <button type="button" class="btn-primary" onclick="goToStep(3)">
+              <span>Data Penumpang</span>
+              <i data-lucide="arrow-right" size="16"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- STEP 3: PENUMPANG & TARIF                  -->
+    <!-- ========================================== -->
+    <section id="step-3" class="screen-container passenger-screen" style="display: none;">
+      
+      <!-- Left Panel: Passenger List -->
+      <div class="left-col">
+        <div class="card-panel">
+          <div class="card-header-flex">
+            <div>
+              <div class="section-title">
+                <i data-lucide="users" size="18"></i>
+                Daftar Penumpang
+              </div>
+              <div class="section-desc" id="passenger-step-subtitle">
+                JAD-01 • Kursi terpilih: 2C, 4A
+              </div>
+            </div>
+            <span class="badge-counter" id="passenger-count-badge">2 Penumpang</span>
+          </div>
+
+          <!-- Passenger Input Quick Form -->
+          <div class="passenger-input-box">
+            <div class="passenger-grid-inputs">
+              <div>
+                <label class="form-label">Nama Lengkap</label>
+                <input type="text" class="form-control" id="input-p-name" placeholder="Nama penumpang">
+              </div>
+              <div>
+                <label class="form-label">No. HP / WA</label>
+                <input type="text" class="form-control" id="input-p-phone" placeholder="0812-xxxx">
+              </div>
+              <div>
+                <label class="form-label">Kategori Tiket</label>
+                <select class="form-control" id="input-p-category">
+                  <option value="dewasa" selected>Dewasa (100%)</option>
+                  <option value="pelajar">Pelajar (Diskon 15%)</option>
+                  <option value="lansia">Lansia (Diskon 20%)</option>
+                  <option value="anak">Anak-anak (Diskon 25%)</option>
+                </select>
+              </div>
+              <div>
+                <button type="button" class="btn-primary" style="height: 38px;" onclick="addOrUpdatePassenger()">
+                  Tambah
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Passenger Table -->
+          <table class="passenger-table">
+            <thead>
+              <tr>
+                <th style="width: 70px;">Kursi</th>
+                <th>Nama &amp; Kontak</th>
+                <th>Kategori Tiket</th>
+                <th style="width: 110px;">Tarif</th>
+                <th style="width: 40px;"></th>
+              </tr>
+            </thead>
+            <tbody id="passenger-table-body">
+              <!-- Rendered rows -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Right Panel: Fare Calculation -->
+      <div class="right-col">
+        <div class="card-panel">
+          <div class="card-header-flex">
+            <div>
+              <div class="section-title">
+                <i data-lucide="calculator" size="18"></i>
+                Kalkulasi Tarif Kategori
+              </div>
+            </div>
+            <span style="font-size: 0.8rem; font-family: monospace; color: var(--color-text-muted);" id="calc-base-text">
+              Dasar: Rp 150.000
+            </span>
+          </div>
+
+          <!-- Itemized Breakdown -->
+          <div class="breakdown-list" id="calc-breakdown-list">
+            <!-- 1x Dewasa (Reguler): Rp 150.000, 1x Pelajar: Rp 127.500 -->
+          </div>
+
+          <!-- Calculation Summary Box -->
+          <div class="calculation-summary-box">
+            <div class="breakdown-row" style="color: var(--color-text-muted); font-size: 0.82rem;">
+              <span>Biaya Layanan Loket</span>
+              <span class="val" id="calc-service-fee">Rp 5.000</span>
+            </div>
+            <div class="total-pay-row">
+              <span class="total-label">Total Pembayaran</span>
+              <span class="total-val" id="calc-total-pay">Rp 282.500</span>
+            </div>
+          </div>
+
+          <!-- Navigation Duo -->
+          <div class="button-duo">
+            <button type="button" class="btn-outline" onclick="goToStep(2)">
+              <i data-lucide="arrow-left" size="16"></i>
+              <span>Pilih Kursi</span>
+            </button>
+            <button type="button" class="btn-primary" onclick="openPrintModal()">
+              <i data-lucide="ticket" size="16"></i>
+              <span>Cetak Tiket</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODAL CETAK TIKET / BOARDING PASS          -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="ticket-modal">
+    <div class="ticket-modal-card">
+      <div class="ticket-header">
+        <div style="font-size: 0.8rem; font-weight: 700; color: #714e36; text-transform: uppercase;">E-Boarding Pass &amp; Tiket Resmi</div>
+        <div style="font-size: 1.3rem; font-weight: 800; color: #2b231d;">NusaShuttle Travel</div>
+        <div class="ticket-booking-code" id="modal-booking-code">NS-20261118-8A92</div>
+      </div>
+
+      <div class="ticket-info-grid">
+        <div>
+          <span style="color: var(--color-text-muted);">Rute:</span><br>
+          <strong id="modal-route">Bandung → Jakarta</strong>
+        </div>
+        <div>
+          <span style="color: var(--color-text-muted);">Jadwal &amp; Jam:</span><br>
+          <strong id="modal-schedule-time">18 Nov 2026 • 08:30 WIB</strong>
+        </div>
+        <div>
+          <span style="color: var(--color-text-muted);">Armada:</span><br>
+          <strong id="modal-fleet">HiAce Premio Eksekutif</strong>
+        </div>
+        <div>
+          <span style="color: var(--color-text-muted);">Kasir / Loket:</span><br>
+          <strong>Loket Pasteur (Sifa A.)</strong>
+        </div>
+      </div>
+
+      <div class="ticket-passenger-list" id="modal-passenger-list">
+        <!-- Passenger details inside modal -->
+      </div>
+
+      <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 1.05rem; margin-bottom: 12px; padding: 0 4px;">
+        <span>Total Lunas:</span>
+        <span id="modal-total-pay" style="font-family: monospace; color: #714e36;">Rp 282.500</span>
+      </div>
+
+      <div class="ticket-barcode">
+        ||| | ||||| || |||| || |||
+      </div>
+
+      <div class="button-duo">
+        <button type="button" class="btn-outline" onclick="closeModal()">Tutup</button>
+        <button type="button" class="btn-primary" onclick="window.print()">
+          <i data-lucide="printer" size="16"></i>
+          <span>Print Tiket</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/main.js"></script>
+</body>
+</html>
+

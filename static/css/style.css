@@ -1,0 +1,826 @@
+:root {
+  --bg-page: #fcf8f3;
+  --bg-card: #fdf5ea;
+  --bg-inner: #ffffff;
+  --bg-occupied: #e9decb;
+  --border-card: #eedcc8;
+  --border-input: #d8c7b3;
+  --border-highlight: #714e36;
+  --color-primary: #714e36;
+  --color-primary-hover: #593c28;
+  --color-secondary: #f0e6d8;
+  --color-text-main: #2b231d;
+  --color-text-muted: #786b60;
+  --color-teal: #21595b;
+  --color-teal-badge: #e2f4ed;
+  --color-teal-text: #1b6853;
+  --color-badge-warn: #fdf0e0;
+  --color-warn-text: #b66814;
+  --radius-lg: 18px;
+  --radius-md: 10px;
+  --radius-sm: 6px;
+  --shadow-card: 0 4px 18px rgba(113, 78, 54, 0.05);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--bg-page);
+  color: var(--color-text-main);
+  line-height: 1.4;
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
+
+/* Header */
+.app-header {
+  background: #ffffff;
+  border-bottom: 1px solid #ebdccb;
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-icon {
+  background-color: var(--color-primary);
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.brand-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #2b231d;
+  letter-spacing: -0.2px;
+}
+
+.brand-subtitle {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+/* Stepper Tabs */
+.stepper-nav {
+  display: flex;
+  background-color: #f7efe4;
+  padding: 4px;
+  border-radius: 30px;
+  gap: 4px;
+}
+
+.step-tab {
+  border: none;
+  background: transparent;
+  padding: 7px 18px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #615144;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.step-tab.active {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(113, 78, 54, 0.25);
+}
+
+.step-tab:hover:not(.active) {
+  background-color: #ebdccb;
+}
+
+/* Header Info Badges */
+.header-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.info-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid #ebdccb;
+  background-color: #ffffff;
+  color: #4a3d33;
+}
+
+.info-pill.cashier {
+  background-color: var(--color-teal);
+  color: #ffffff;
+  border-color: var(--color-teal);
+}
+
+/* Main Container */
+.main-wrapper {
+  max-width: 1240px;
+  margin: 24px auto 0 auto;
+  padding: 0 20px;
+}
+
+.screen-container {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.screen-container.seat-screen {
+  grid-template-columns: 1.4fr 1fr;
+}
+
+.screen-container.passenger-screen {
+  grid-template-columns: 1.5fr 1fr;
+}
+
+/* Card Containers */
+.card-panel {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--shadow-card);
+}
+
+.card-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.section-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #2b231d;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-desc {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-top: 3px;
+}
+
+.badge-counter {
+  background-color: var(--color-teal);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+.badge-mint {
+  background-color: var(--color-teal-badge);
+  color: var(--color-teal-text);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+/* Forms & Inputs */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #4a3e35;
+  margin-bottom: 6px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 9px 12px;
+  font-size: 0.88rem;
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius-md);
+  background-color: #ffffff;
+  color: #2b231d;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-control:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(113, 78, 54, 0.15);
+}
+
+/* Inner Selected Schedule Card */
+.selected-schedule-box {
+  background: #ffffff;
+  border: 1px solid #e8dbcc;
+  border-radius: 14px;
+  padding: 16px;
+  margin-top: 18px;
+}
+
+.selected-schedule-box .tag-pill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #714e36;
+  background-color: #f7ede1;
+  padding: 2px 8px;
+  border-radius: 6px;
+  float: right;
+  letter-spacing: 0.5px;
+}
+
+.price-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 14px 0 16px 0;
+  border-top: 1px dashed #e8decb;
+  padding-top: 12px;
+}
+
+.price-display .label {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.price-display .value {
+  font-size: 1.35rem;
+  font-weight: 700;
+  font-family: "Courier New", Courier, monospace, monospace;
+  color: #2b231d;
+}
+
+/* Buttons */
+.btn-primary {
+  width: 100%;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border: none;
+  padding: 11px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.btn-outline {
+  background-color: #ffffff;
+  color: #3b2f26;
+  border: 1px solid var(--border-input);
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.btn-outline:hover {
+  background-color: #f7efe5;
+}
+
+/* Schedule List Cards */
+.schedule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.schedule-card {
+  background: #ffffff;
+  border: 1px solid #ebdccb;
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.schedule-card:hover {
+  border-color: #c9ab91;
+  transform: translateY(-1px);
+}
+
+.schedule-card.active {
+  border: 2px solid var(--color-primary);
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(113, 78, 54, 0.08);
+}
+
+.sched-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.code-pill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-family: monospace;
+  background-color: #f7ede1;
+  color: #614631;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid #eedcc8;
+}
+
+.time-row {
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-family: monospace;
+  color: #2b231d;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.duration-tag {
+  font-size: 0.75rem;
+  font-weight: normal;
+  color: var(--color-text-muted);
+  font-family: sans-serif;
+}
+
+.armada-desc {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
+.sched-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.seat-status-pill {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.seat-status-pill.mint {
+  background-color: #e4f5ee;
+  color: #1a6e55;
+}
+
+.seat-status-pill.warning {
+  background-color: var(--color-badge-warn);
+  color: var(--color-warn-text);
+}
+
+.sched-price-val {
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-family: "Courier New", Courier, monospace;
+}
+
+/* Step 2 - Seat Map Styles */
+.legend-bar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #ffffff;
+  padding: 10px 18px;
+  border: 1px solid #ebdccb;
+  border-radius: var(--radius-md);
+  margin-bottom: 20px;
+  font-size: 0.82rem;
+  color: #4a3e35;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-box {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+}
+
+.legend-box.available {
+  background: #ffffff;
+  border: 1px solid #b5a695;
+}
+
+.legend-box.selected {
+  background: var(--color-primary);
+}
+
+.legend-box.occupied {
+  background: var(--bg-occupied);
+  border: 1px solid #d4c5b3;
+}
+
+/* Shuttle Layout Graphic */
+.shuttle-chassis {
+  background: #ffffff;
+  border: 1px solid #e8dbcc;
+  border-radius: 20px;
+  padding: 28px 40px;
+  max-width: 480px;
+  margin: 0 auto;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.02);
+}
+
+.seat-grid-shuttle {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.seat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.seat-btn {
+  flex: 1;
+  height: 52px;
+  border-radius: 10px;
+  border: 1px solid #c9baa8;
+  background: #ffffff;
+  color: #3b2e25;
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.seat-btn:hover:not(.occupied) {
+  border-color: var(--color-primary);
+  transform: scale(1.02);
+}
+
+.seat-btn.selected {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.seat-btn.occupied {
+  background-color: var(--bg-occupied);
+  border-color: #d8c9b7;
+  color: #7b6d61;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+.seat-btn.driver {
+  background-color: #f7ece1;
+  border-color: #dfcdba;
+  color: #554437;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+}
+
+.seat-aisle {
+  width: 50px;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #9e8d7f;
+  font-style: italic;
+}
+
+.seat-empty-space {
+  flex: 1;
+}
+
+/* Quota & Validation Box */
+.quota-box {
+  background: #ffffff;
+  border: 1px solid #ebdccb;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.quota-box-title {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #2b231d;
+  margin-bottom: 6px;
+}
+
+.quota-box-desc {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+.selected-seats-container {
+  background: #ffffff;
+  border: 1px solid #ebdccb;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.seats-badge-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  min-height: 38px;
+  align-items: center;
+}
+
+.seat-badge {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-reset-text {
+  background: none;
+  border: none;
+  color: #714e36;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.button-duo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+/* Step 3 - Passengers Table */
+.passenger-input-box {
+  background: #ffffff;
+  border: 1px solid #ebdccb;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 18px;
+}
+
+.passenger-grid-inputs {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1.8fr 1fr;
+  gap: 10px;
+  align-items: end;
+}
+
+.passenger-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border: 1px solid #ebdccb;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.passenger-table th {
+  background: #fbf4ea;
+  text-align: left;
+  padding: 12px 14px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #615044;
+  border-bottom: 1px solid #ebdccb;
+}
+
+.passenger-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #f2e9dc;
+  font-size: 0.85rem;
+  color: #2b231d;
+  vertical-align: middle;
+}
+
+.passenger-table tr:last-child td {
+  border-bottom: none;
+}
+
+.passenger-phone {
+  font-size: 0.76rem;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+.seat-code-highlight {
+  font-weight: 700;
+  font-family: monospace;
+}
+
+.btn-delete-row {
+  background: none;
+  border: none;
+  color: #8c796b;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.btn-delete-row:hover {
+  color: #c93b2b;
+  background: #fdeeea;
+}
+
+/* Calculation Panel */
+.breakdown-list {
+  background: #ffffff;
+  border: 1px solid #ebdccb;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  padding: 6px 0;
+  color: #4a3e35;
+}
+
+.breakdown-row .val {
+  font-family: monospace;
+  font-weight: 700;
+}
+
+.calculation-summary-box {
+  background: #ffffff;
+  border: 1px solid #ebdccb;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 18px;
+}
+
+.total-pay-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 10px;
+  padding-top: 12px;
+  border-top: 1px dashed #e8decb;
+}
+
+.total-pay-row .total-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.total-pay-row .total-val {
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-family: "Courier New", Courier, monospace;
+  color: #2b231d;
+}
+
+/* Modal Ticket */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.ticket-modal-card {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 520px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border: 2px dashed #d5c3b1;
+}
+
+.ticket-header {
+  text-align: center;
+  border-bottom: 2px solid #ebdccb;
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+}
+
+.ticket-booking-code {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  font-family: monospace;
+  color: var(--color-primary);
+  margin-top: 4px;
+}
+
+.ticket-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  font-size: 0.82rem;
+  margin-bottom: 16px;
+}
+
+.ticket-passenger-list {
+  background: #fdfaf6;
+  border: 1px solid #eedecb;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+}
+
+.ticket-barcode {
+  text-align: center;
+  padding: 10px;
+  background: #ffffff;
+  font-family: monospace;
+  letter-spacing: 5px;
+  font-size: 1.4rem;
+  border: 1px solid #ebdccb;
+  border-radius: 6px;
+  margin-bottom: 18px;
+}
+
+@media (max-width: 992px) {
+  .screen-container {
+    grid-template-columns: 1fr !important;
+  }
+  .passenger-grid-inputs {
+    grid-template-columns: 1fr;
+  }
+}
+
